@@ -1,31 +1,4 @@
 const socketio = require("socket.io");
-var BuiltInEmitter = require('events').EventEmitter
-
-// const wildcard = require("socketio-wildcard");
-function socketioWildcardMiddleware() {
-  var Emitter = BuiltInEmitter
-  var emit = Emitter.prototype.emit
-
-  function onevent (oldOnevent, packet) {
-    var args = packet.data || []
-    if (packet.id != null) {
-      args.push(this.ack(packet.id))
-    }
-    oldOnevent.call(this, packet);
-    emit.call(this, '*', packet)
-    return emit.apply(this, args)
-  }
-
-  return function (socket, next) {
-    let oldOnevent = socket.onevent;
-    var fn = onevent.bind(socket, oldOnevent)
-    if (socket.onevent !== fn) {
-      socket.onevent = fn
-      socket.hasReplaceOneventFn = true;
-    }
-    return next ? next() : null
-  }
-}
 
 module.exports = function (RED) {
   function NodeFunction(config) {
@@ -60,12 +33,6 @@ module.exports = function (RED) {
       const socketId = socket.id;
 
       node.log(`${socketId} connected`);
-
-      // socket.on("*", (packet) => {
-      //   console.debug('llllllllll', packet);
-      //   const [event, payload] = packet.data;
-      //   node.emit(`sio_event__${event}`, { event, payload, socketId });
-      // });
 
       socket.on("disconnect", () => {
         node.log(`${socketId} disconnected`);

@@ -16,7 +16,7 @@ module.exports = function (RED) {
                 msg.next();
                 return;
             }
-            msg.next(new Error(msg.errMsg ? msg.errMsg : 'invalid (345456)'));
+            msg.next(new Error(msg.errMsg ? msg.errMsg : 'Your connection is not allowed (345456)'));
         });
 
     }

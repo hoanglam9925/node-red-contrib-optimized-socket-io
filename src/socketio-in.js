@@ -11,43 +11,39 @@ module.exports = function (RED) {
     node.inEvent = config.event;
 
     // Config node event name
-    // const sioEvent = `sio_event__${node.inEvent}`;
     const sioEvent = `${node.inEvent}`;
 
     // *************************************************************************
     // Node logic
     // *************************************************************************
     // Called when a socket.io message is received from a client
+    // *************** NO NEED TO GET SERVER, GET SOCKET FROM GLOBAL CONTEXT ***************
     node.on("input", (msg) => {
       if (!msg.socketId) {
         node.log("No msg.socketId");
         return;
       }
 
+      // Get socket from global context
       const socket = node.context().global.get(`socket_${msg.socketId}`);
-      const sioEventHandler = (eventData) => {
-        console.debug("sioEventHandler", eventData);
-        node.send({ ...eventData });
-      };
-  
+      if (!socket) {
+        node.error("No socket found with id: " + msg.socketId);
+        return;
+      }
+
       // *************************************************************************
       // Listener management
       // *************************************************************************
       // Register handler
-      socket.on(sioEvent, sioEventHandler);
+      socket.on(sioEvent, (eventData) => {
+        node.send({ ...eventData });
+      });
   
       // Deregister handler
       node.on("close", function () {
         socket.off(sioEvent, sioEventHandler);
       });
     });
-    // const sioEventHandler = (eventData) => {
-    //   const { socketId, event, payload } = eventData;
-
-    //   if (event === node.inEvent) {
-    //     node.send({ socketId, event, payload });
-    //   }
-    // };
 
     // // *************************************************************************
     // // Listener management

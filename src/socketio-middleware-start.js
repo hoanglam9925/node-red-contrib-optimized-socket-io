@@ -16,14 +16,13 @@ module.exports = function (RED) {
         // Node logic
         // *************************************************************************
         const serverIo = node.inServer.io;
-        // Middleware
+        // Register middleware
         serverIo.use((socket, next) => {
-            // Log the connection
             const socketId = socket.id;
             // Set socket to global context
             node.context().global.set(`socket_${socketId}`, socket);
-            node.send([{ socketId, next }, { socketId, next }]);
-            next();
+
+            node.send([{ socketId, next}, { socketId }]);
         });
 
 
