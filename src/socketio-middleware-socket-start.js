@@ -1,5 +1,4 @@
 const parseTypedInputs = require("./util/parseTypedInputs");
-const wildcard = require("socketio-wildcard");
 
 module.exports = function (RED) {
     function socketIoMiddlewareSocketStart(config) {
@@ -29,8 +28,6 @@ module.exports = function (RED) {
             }
             // socket.use(wildcard());
             socket.use((request, next) => {
-                console.debug("socket start");
-                
                 // Packet is the data sent from the client
                 // next is the callback to continue the execution
                 node.send({ request, socketNext: next , ...msg});
