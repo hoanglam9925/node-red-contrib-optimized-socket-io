@@ -1,0 +1,35 @@
+{
+  "name": "node-red-contrib-socketio-advance",
+  "version": "0.1.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^4.5.1",
+    "socketio-wildcard": "^2.0.0"
+  },
+  "keywords": [
+    "node-red"
+  ],
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "node-red": {
+    "version": ">=3.0.0",
+    "nodes": {
+      "socket.io server": "src/socketio-server.js",
+      "socket.io in": "src/socketio-in.js",
+      "socket.io out": "src/socketio-out.js",
+      "socket.io join": "src/socketio-join.js",
+      "socket.io leave": "src/socketio-leave.js",
+      "socket.io middleware start": "src/socketio-middleware-start.js",
+      "socket.io middleware end": "src/socketio-middleware-end.js",
+      "socket.io middleware socket start": "src/socketio-middleware-socket-start.js",
+      "socket.io middleware socket end": "src/socketio-middleware-socket-end.js"
+    }
+  }
+}

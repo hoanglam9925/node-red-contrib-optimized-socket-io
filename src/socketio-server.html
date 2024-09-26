@@ -1,0 +1,94 @@
+<script type="text/javascript">
+  RED.nodes.registerType("socket.io server", {
+    category: "config",
+    defaults: {
+      name: { value: "" },
+      // host: { value: "localhost", required: true },
+      port: { value: 1881, required: true, validate: RED.validators.number() },
+      options: { value: "" },
+      // corsOrigin: { value: "" },
+      // corsMethods: { value: "" },
+      // corsAllowedHeaders: { value: "" },
+      // corsCredentials: { value: "" },
+    },
+    label: function () {
+      return this.name || "Socket.IO server at " + this.port;
+    },
+    oneditprepare: function () {
+      this.editor = RED.editor.createEditor({
+        id: 'node-config-input-options-editor',
+        mode: 'ace/mode/json',
+        value: $("#node-config-input-options").val()
+      });
+    },
+    oneditsave: function () {
+      $("#node-config-input-options").val(this.editor.getValue());
+      this.editor.destroy();
+      delete this.editor;
+    },
+    oneditcancel: function () {
+      this.editor.destroy();
+      delete this.editor;
+    },
+    oneditresize: function (size) {
+      var rows = $("#dialog-form>div:not(.node-config-text-editor-row)");
+      var height = $("#dialog-form").height();
+      for (var i = 0; i < rows.size(); i++) {
+        height -= $(rows[i]).outerHeight(true);
+      }
+      var editorRow = $("#dialog-form>div.node-config-text-editor-row");
+      height -= (parseInt(editorRow.css("marginTop")) + parseInt(editorRow.css("marginBottom")));
+      $(".node-config-text-editor-row").css("height", height + "px");
+      this.editor.resize();
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="socket.io server">
+  <!-- Name -->
+<div class="form-row">
+  <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+  <input type="text" id="node-config-input-name" placeholder="Name" />
+</div>
+<!-- port -->
+<div class="form-row">
+  <label for="node-config-input-port">Port</label>
+  <input type="text" id="node-config-input-port" />
+</div>
+
+
+<div class="form-row" style="position: relative; margin-bottom: 0px;">
+  <label for="node-config-input-options">
+    <i class="fa fa-file-code-o"></i>
+    <span>Options</span>
+  </label>
+  <input type="hidden" id="node-config-input-options" autofocus="autofocus">
+  <div class="form-row node-config-text-editor-row">
+    <div style="height:250px;" class="node-text-editor" id="node-config-input-options-editor"></div>
+  </div>
+</div>
+
+<!-- corsOrigin -->
+<!-- <div class="form-row">
+    <label for="node-config-input-corsOrigin">CORS Origin</label>
+    <input type="text" id="node-config-input-corsOrigin" />
+  </div> -->
+<!-- corsMethods -->
+<!-- <div class="form-row">
+    <label for="node-config-input-corsMethods">CORS Methods</label>
+    <input type="text" id="node-config-input-corsMethods" />
+  </div> -->
+<!-- corsAllowedHeaders -->
+<!-- <div class="form-row">
+    <label for="node-config-input-corsAllowedHeaders"
+      >CORS AllowedHeaders</label
+    >
+    <input type="text" id="node-config-input-corsAllowedHeaders" />
+  </div> -->
+<!-- corsCredentials -->
+<!-- <div class="form-row">
+    <label for="node-config-input-corsCredentials">CORS Credentials</label>
+    <input type="text" id="node-config-input-corsCredentials" />
+    <input type="hidden" id="node-config-input-corsCredentialsType" />
+  </div> -->
+</script>

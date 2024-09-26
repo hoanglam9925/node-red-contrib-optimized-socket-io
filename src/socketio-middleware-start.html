@@ -1,0 +1,44 @@
+<script type="text/html" data-template-name="socket.io middleware-start">
+    <div class="form-row">
+        <label for="node-input-name">
+            <i class="fa fa-tag"></i>
+            <span>Name</span>
+        </label>
+        <input type="text" id="node-input-name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-server">
+            <i class="fa fa-link"></i>
+            <span>Server</span>
+        </label>
+        <input type="text" id="node-input-server">
+    </div>
+
+
+</script>
+
+
+<script type="text/javascript">
+    RED.nodes.registerType('socket.io middleware-start', {
+        category: "Socket IO Advanced",
+        color: "#BA55D3",
+        defaults: {
+            name: {
+                value: ""
+            },
+            server: {
+                value: "",
+                required: true,
+                type: "socket.io server"
+            },
+        },
+        inputs: 0,
+        outputs: 2,
+        icon: "serial.svg",
+        label: function () {
+            return this.name || "Socket.IO Middleware Start";
+        },
+    });
+
+</script>

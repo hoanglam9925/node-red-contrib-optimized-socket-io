@@ -1,0 +1,30 @@
+<script type="text/html" data-template-name="socket.io middleware-end">
+    <div class="form-row">
+        <label for="node-input-name">
+            <i class="fa fa-tag"></i>
+            <span>Name</span>
+        </label>
+        <input type="text" id="node-input-name">
+    </div>
+
+</script>
+
+
+<script type="text/javascript">
+    RED.nodes.registerType('socket.io middleware-end', {
+        category: "Socket IO Advanced",
+        color: "#BA55D3",
+        defaults: {
+            name: {
+                value: ""
+            },
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "serial.svg",
+        label: function () {
+            return this.name || "Socket.IO Middleware End";
+        },
+    });
+
+</script>
