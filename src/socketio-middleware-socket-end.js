@@ -27,6 +27,7 @@ module.exports = function (RED) {
             try {
                 const socket = node.context().global.get(`socket_${msg.socketId}`);
                 socket.emit("error", msg.errMsg ? msg.errMsg : 'Your action is not allowed (345456)');
+                return;
             } catch (error) {
                 node.error(error);
             }
