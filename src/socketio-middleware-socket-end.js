@@ -7,25 +7,35 @@ module.exports = function (RED) {
         const node = this;
 
         node.on("input", (msg) => {
-            if (!msg.socketNext) {
-                node.error("No msg.socketNext (3324)");
+            if (!msg._socketId) {
+                node.error("No socket id found (2342)");
+                return;
+            }
+
+            if (!msg._contextStorageName) {
+                node.error("No context storage name found (2342)");
+                return;
+            }
+
+            if (!msg._socketNext) {
+                node.error("No socket next found (3324)");
                 return;
             }
 
             if (!msg.request) {
-                node.error("No msg.request (4423)");
+                node.error("No request data found (4423)");
                 return;
             }
 
             if (msg.payload) {
                 node.send(msg);
-                msg.socketNext();
+                msg._socketNext();
                 return;
             }
 
             // Socket cannot throw error in next() function, so we need to emit an event to handle it
             try {
-                const socket = node.context().global.get(`socket_${msg.socketId}`);
+                const socket = node.context().global.get(`socket_${msg._socketId}`, msg._contextStorageName);
                 socket.emit("error", msg.errMsg ? msg.errMsg : 'Your action is not allowed (345456)');
                 return;
             } catch (error) {

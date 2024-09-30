@@ -5,8 +5,8 @@
       name: { value: "" },
       // host: { value: "localhost", required: true },
       port: { value: 1881, required: true, validate: RED.validators.number() },
-      options: { value: "" },
-      // corsOrigin: { value: "" },
+      contextStorageName: { value: "memoryOnly", required: true },
+      options: { value: "", required: true },
       // corsMethods: { value: "" },
       // corsAllowedHeaders: { value: "" },
       // corsCredentials: { value: "" },
@@ -15,6 +15,9 @@
       return this.name || "Socket.IO server at " + this.port;
     },
     oneditprepare: function () {
+      $("#node-config-input-name").val(this.name);
+      $("#node-config-input-port").val(this.port);
+      $("#node-config-input-contextStorageName").val(this.contextStorageName);
       this.editor = RED.editor.createEditor({
         id: 'node-config-input-options-editor',
         mode: 'ace/mode/json',
@@ -22,6 +25,9 @@
       });
     },
     oneditsave: function () {
+      this.name = $("#node-config-input-name").val();
+      this.port = $("#node-config-input-port").val();
+      this.contextStorageName = $("#node-config-input-contextStorageName").val();
       $("#node-config-input-options").val(this.editor.getValue());
       this.editor.destroy();
       delete this.editor;
@@ -55,7 +61,11 @@
   <label for="node-config-input-port">Port</label>
   <input type="text" id="node-config-input-port" />
 </div>
-
+<!-- Context storage name -->
+<div class="form-row">
+  <label for="node-config-input-contextStorageName">Context storage name</label>
+  <input type="text" id="node-config-input-contextStorageName" />
+</div>
 
 <div class="form-row" style="position: relative; margin-bottom: 0px;">
   <label for="node-config-input-options">

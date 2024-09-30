@@ -19,15 +19,20 @@ module.exports = function (RED) {
     // Called when a socket.io message is received from a client
     // *************** NO NEED TO GET SERVER, GET SOCKET FROM GLOBAL CONTEXT ***************
     node.on("input", (msg) => {
-      if (!msg.socketId) {
+      if (!msg._socketId) {
         node.log("No msg.socketId");
         return;
       }
 
+      if (!msg._contextStorageName) {
+        node.error("No context storage name found in msg._contextStorageName");
+        return;
+      }
+
       // Get socket from global context
-      const socket = node.context().global.get(`socket_${msg.socketId}`);
+      const socket = node.context().global.get(`socket_${msg._socketId}`, msg._contextStorageName);
       if (!socket) {
-        node.error("No socket found with id: " + msg.socketId);
+        node.error("No socket found with id: " + msg._socketId);
         return;
       }
 

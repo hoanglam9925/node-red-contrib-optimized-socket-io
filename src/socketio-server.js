@@ -3,17 +3,49 @@ const fs = require('fs');
 const https = require('https');
 
 module.exports = function (RED) {
+  function checkConfigMemory(node, settingContext, userInputContextName) {
+    if (!userInputContextName) {
+      node.error("Cannot create node without context storage name");
+      return false;
+    }
+
+    if (settingContext === null || settingContext === undefined) {
+      node.error("Create context storage setting in settings.js with module memory first");
+      return false;
+    }
+
+    const contextStorage = settingContext[userInputContextName];
+    if (!contextStorage) {
+      node.error(`Context storage ${userInputContextName} not found in settings.js`);
+      return false;
+    }
+
+    if (contextStorage?.module !== "memory") {
+      node.error(`Context storage ${userInputContextName} is not set to module memory`);
+      return false;
+    }
+    return true;
+  }
   function NodeFunction(config) {
     // *************************************************************************
     // Boilerplate
     // *************************************************************************
     RED.nodes.createNode(this, config);
     const node = this;
+    const contextStorageSetting = RED.settings.contextStorage;
 
     // *************************************************************************
     // Setup
     // *************************************************************************
+    node.contextStorageName = config.contextStorageName;
     node.inPort = config.port;
+
+    // Check if context storage is set up correctly
+    const alreadySetupContext = checkConfigMemory(node, contextStorageSetting, node.contextStorageName);
+    if (!alreadySetupContext) {
+      return;
+    }
+
     let useSSL = false;
     const sslConfig = {};
     try {
@@ -52,19 +84,17 @@ module.exports = function (RED) {
     }
     node.io = io;
 
-
-    // io.use(socketioWildcardMiddleware());
-
     // *************************************************************************
     // Set up sockets
     // *************************************************************************
+
     io.on("connection", (socket) => {
       const socketId = socket.id;
 
       node.log(`${socketId} connected`);
 
       socket.on("disconnect", () => {
-        node.log(`${socketId} disconnected`);
+        node.log(`${socketId} disconnected`);node
       });
     });
 
@@ -72,7 +102,6 @@ module.exports = function (RED) {
     // Handle disconnect
     // *************************************************************************
     node.on("close", function () {
-      node.log("Closing");
       io.close();
     });
 

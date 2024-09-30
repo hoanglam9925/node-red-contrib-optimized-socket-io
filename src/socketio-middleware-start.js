@@ -16,13 +16,28 @@ module.exports = function (RED) {
         // Node logic
         // *************************************************************************
         const serverIo = node.inServer.io;
+        if (!serverIo) {
+            node.error("IO server not found (95834). Check configuration.");
+            return;
+        }
+
+        const storageName = node.inServer.contextStorageName;
         // Register middleware
         serverIo.use((socket, next) => {
             const socketId = socket.id;
             // Set socket to global context
-            node.context().global.set(`socket_${socketId}`, socket);
+            node.context().global.set(`socket_${socketId}`, socket, storageName);
 
-            node.send([{ socketId, next}, { socketId }]);
+            const returnObject = {
+                _socketId: socketId,
+                _contextStorageName: storageName,
+            }
+
+            const returnObjectWithNext = {
+                ...returnObject,
+                _next: next
+            }
+            node.send([returnObjectWithNext, returnObject]);
         });
 
 

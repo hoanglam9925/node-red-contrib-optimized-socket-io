@@ -7,16 +7,16 @@ module.exports = function (RED) {
         const node = this;
 
         node.on("input", (msg) => {
-            if (!msg.next) {
-                node.log("No msg.next");
+            if (!msg._next) {
+                node.log("No next function found (56756)");
                 return;
             }
 
             if (msg.payload) {
-                msg.next();
+                msg._next();
                 return;
             }
-            msg.next(new Error(msg.errMsg ? msg.errMsg : 'Your connection is not allowed (345456)'));
+            msg._next(new Error(msg.errMsg ? msg.errMsg : 'Your connection is not allowed (345456)'));
         });
 
     }
