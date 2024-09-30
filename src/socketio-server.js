@@ -46,26 +46,36 @@ module.exports = function (RED) {
       return;
     }
 
-    let useSSL = false;
-    const sslConfig = {};
+    // Parse options
     try {
       const options = config.options ? JSON.parse(config.options) : {};
-      if (options.ssl) {
-        useSSL = true;
-        if (!options.ssl.key || !options.ssl.cert) {
-          node.error("[Wrong Options] create socket.io instance fail!");
-          node.options = {};
-          return;
-        }
-        sslConfig.key = fs.readFileSync(options.ssl.key);
-        sslConfig.cert = fs.readFileSync(options.ssl.cert);
-        delete options.ssl;
-      }
-
       node.options = options;
     } catch (error) {
       node.error("[Wrong Options] create socket.io instance fail!");
       node.options = {};
+    }
+
+    // Parse SSL
+    let useSSL = false;
+    const sslConfig = {};
+    try {
+      if (config.ssl_key && config.ssl_cert) {
+        sslConfig.key = fs.readFileSync(config.ssl_key);
+        sslConfig.cert = fs.readFileSync(config.ssl_cert);
+        useSSL = true;
+      }
+    } catch (error) {
+      node.error("[Wrong SSL] create socket.io with ssl fail!");
+    }
+
+    if (!useSSL) {
+      node.warn("SocketIO server not using SSL");
+      if (!config.ssl_key) {
+        node.warn("No SSL key provided. Or the key file does not exist.");
+      }
+      if (!config.ssl_cert) {
+        node.warn("No SSL cert provided. Or the cert file does not exist.");
+      }
     }
 
     // *************************************************************************

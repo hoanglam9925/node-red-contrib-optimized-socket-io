@@ -6,6 +6,8 @@
       // host: { value: "localhost", required: true },
       port: { value: 1881, required: true, validate: RED.validators.number() },
       contextStorageName: { value: "memoryOnly", required: true },
+      ssl_key: { value: "", required: false },
+      ssl_cert: { value: "", required: false },
       options: { value: "", required: true },
       // corsMethods: { value: "" },
       // corsAllowedHeaders: { value: "" },
@@ -18,6 +20,8 @@
       $("#node-config-input-name").val(this.name);
       $("#node-config-input-port").val(this.port);
       $("#node-config-input-contextStorageName").val(this.contextStorageName);
+      $("#node-config-input-ssl-key-path").val(this.ssl_key);
+      $("#node-config-input-ssl-cert-path").val(this.ssl_cert);
       this.editor = RED.editor.createEditor({
         id: 'node-config-input-options-editor',
         mode: 'ace/mode/json',
@@ -28,6 +32,8 @@
       this.name = $("#node-config-input-name").val();
       this.port = $("#node-config-input-port").val();
       this.contextStorageName = $("#node-config-input-contextStorageName").val();
+      this.ssl_key = $("#node-config-input-ssl-key-path").val();
+      this.ssl_cert = $("#node-config-input-ssl-cert-path").val();
       $("#node-config-input-options").val(this.editor.getValue());
       this.editor.destroy();
       delete this.editor;
@@ -60,6 +66,16 @@
 <div class="form-row">
   <label for="node-config-input-port">Port</label>
   <input type="text" id="node-config-input-port" />
+</div>
+<!-- Key path -->
+<div class="form-row">
+  <label for="node-config-input-port">Key path</label>
+  <input type="text" id="node-config-input-ssl-key-path" />
+</div>
+<!-- Cert path -->
+<div class="form-row">
+  <label for="node-config-input-port">Cert path</label>
+  <input type="text" id="node-config-input-ssl-cert-path" />
 </div>
 <!-- Context storage name -->
 <div class="form-row">
