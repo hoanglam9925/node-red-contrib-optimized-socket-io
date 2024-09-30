@@ -1,3 +1,3 @@
 #!/bin/bash
-npm patch
+npm version patch
 npm publish
