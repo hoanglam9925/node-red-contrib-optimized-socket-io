@@ -1,3 +1,4 @@
+const { showNodeStatus } = require("./util/nodeStatus");
 const parseTypedInputs = require("./util/parseTypedInputs");
 
 module.exports = function (RED) {
@@ -25,7 +26,27 @@ module.exports = function (RED) {
       const room = parseTypedInputs(node.inRoom, node.inRoomType, msg, RED);
       const target = parseTypedInputs(node.inTarget, node.inTargetType, msg, RED);
 
-      io.sockets.sockets.get(target).join(room);
+      let socket = io.sockets.sockets.get(target);
+      if (!socket && msg._contextStorageName && msg._socketId) { 
+        socket = node.context().global.get(`socket_${target}`, msg._contextStorageName);
+      }
+
+      // Sanity check socket
+      if (!socket) {
+        showNodeStatus(node, "red", `No socket found with id ${target}`);
+      }
+
+      try {
+        socket.join(room);
+        if (Array.isArray(room)) {
+          const roomLength = room.length;
+          showNodeStatus(node, "green", `Joined ${roomLength} rooms`);
+        } else {
+          showNodeStatus(node, "green", `Joined room ${room}`);
+        }
+      } catch (error) {
+        showNodeStatus(node, "red", `Error joining room ${room}`);
+      }
 
       node.send(msg);
     };

@@ -104,7 +104,8 @@ module.exports = function (RED) {
       node.log(`${socketId} connected`);
 
       socket.on("disconnect", () => {
-        node.log(`${socketId} disconnected`);node
+        node.log(`${socketId} disconnected`);
+        // Leave all rooms
       });
     });
 

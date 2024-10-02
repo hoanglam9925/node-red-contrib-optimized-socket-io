@@ -1,6 +1,8 @@
 const parseTypedInputs = require("./util/parseTypedInputs");
+const { showNodeStatus } = require("./util/nodeStatus");
 
 module.exports = function (RED) {
+
     function socketIoMiddlewareStart(config) {
         // *************************************************************************
         // Setup
@@ -17,11 +19,14 @@ module.exports = function (RED) {
         // *************************************************************************
         const serverIo = node.inServer.io;
         if (!serverIo) {
+            showNodeStatus(node, "red", "IO server not found (95834). Check configuration.");
             node.error("IO server not found (95834). Check configuration.");
             return;
         }
 
         const storageName = node.inServer.contextStorageName;
+
+        showNodeStatus(node, "green", "Started");
         // Register middleware
         serverIo.use((socket, next) => {
             const socketId = socket.id;

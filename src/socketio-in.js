@@ -40,8 +40,12 @@ module.exports = function (RED) {
       // Listener management
       // *************************************************************************
       // Register handler
-      socket.on(sioEvent, (eventData) => {
-        node.send({ ...eventData });
+      socket.on(sioEvent, (eventData, ...args) => {
+        if (args?.length > 0) {
+          node.send({ event: sioEvent, ...eventData, args, ...msg });
+        } else {
+          node.send({ event: sioEvent, ...eventData, ...msg});
+        }
       });
   
       // Deregister handler
