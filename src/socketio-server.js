@@ -106,6 +106,7 @@ module.exports = function (RED) {
       socket.on("disconnect", () => {
         node.log(`${socketId} disconnected`);
         // Leave all rooms
+        // https://stackoverflow.com/questions/42198973/does-it-need-to-socket-leave-a-room-on-disconnect-in-socket-io
       });
     });
 
