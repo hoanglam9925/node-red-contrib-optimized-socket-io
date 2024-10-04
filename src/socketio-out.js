@@ -29,12 +29,28 @@ module.exports = function (RED) {
       const data = parseTypedInputs(node.inData, node.inDataType, msg, RED);
 
       if (target) {
+        if (Array.isArray(target)) {
+          target.forEach((t) => {
+            // Emit to room or socket
+            io.to(t).emit(event, data);
+          });
+          return;
+        }
+
+        if (target instanceof Map) {
+          target.forEach((value, key) => {
+            // Emit to room or socket
+            io.to(key).emit(event, data);
+          });
+          return;
+        }
+
         // Emit to room or socket
         io.to(target).emit(event, data);
-      } else {
-        // Emit globally
-        io.emit(event, data);
+        return;
       }
+      // Emit globally
+      io.emit(event, data);
     };
 
     // *************************************************************************
