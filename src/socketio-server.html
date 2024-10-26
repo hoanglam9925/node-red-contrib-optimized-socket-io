@@ -118,3 +118,17 @@
     <input type="hidden" id="node-config-input-corsCredentialsType" />
   </div> -->
 </script>
+
+<script type="text/markdown" data-help-name="socket.io server">
+  <b>Configuration for a Socket.IO server.</b>
+  <br>
+  <b>Port</b>: The port on which the server should listen.
+  <br>
+  <b>Key Path</b>: Path to the SSL key file. Leave empty if SSL is not required.
+  <br>
+  <b>Cert Path</b>: Path to the SSL certificate file. Leave empty if SSL is not required.
+  <br>
+  <b>Context Storage Name</b>: Specifies the context storage name to use. Ensure the context storage module is set to "memory" (do not use "localfilesystem") in settings.js.
+  <br>
+  <b>Options</b>: Object containing additional configuration options for the Socket.IO server. Refer to the Socket.IO documentation for details on configurable options.
+</script>

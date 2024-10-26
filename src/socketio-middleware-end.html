@@ -1,17 +1,5 @@
-<script type="text/html" data-template-name="socket.io middleware-end">
-    <div class="form-row">
-        <label for="node-input-name">
-            <i class="fa fa-tag"></i>
-            <span>Name</span>
-        </label>
-        <input type="text" id="node-input-name">
-    </div>
-
-</script>
-
-
 <script type="text/javascript">
-    RED.nodes.registerType('socket.io middleware-end', {
+  RED.nodes.registerType('socket.io middleware-end', {
         category: "Socket IO Optimized",
         color: "#BA55D3",
         defaults: {
@@ -26,5 +14,23 @@
             return this.name || "Socket.IO Middleware End";
         },
     });
+</script>
 
+<script type="text/html" data-template-name="socket.io middleware-end">
+    <div class="form-row">
+        <label for="node-input-name">
+            <i class="fa fa-tag"></i>
+            <span>Name</span>
+        </label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/markdown" data-help-name="socket.io middleware-end"><b>End a socketIO middleware.</b>
+    <br>
+    <br>
+    This node should be placed at the end of the flow have _next function
+    <br>
+    <br>
+    <b>msg.payload</b> is <b>true</b> if the connection is accepted, <b>false</b> if the connection is rejected.
 </script>

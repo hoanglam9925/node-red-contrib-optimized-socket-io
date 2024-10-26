@@ -29,23 +29,12 @@
 </script>
 
 <script type="text/markdown" data-help-name="socket.io in">
-  Listens to a Socket.IO server for an event.
-
-  ### Inputs
-
-  N/A
-
-  ### Outputs
-
-  : socketId (string) : the id of the Socket.IO sender.
-  : event (string) : the name of the event.
-  : payload (any) : the data included with the event (if any).
-
-  ### Details
-
-  N/A
-
-  ### References
-
-  N/A
+  <b>Listen for incoming socket.io events.</b>
+  <br>
+  <br>
+  <b>Listen event</b> is the event name to listen for.
+  <br>
+  <br>
+  The input must contain <b>_socketId</b> and <b>_contextStorageName</b> properties, provided by the <b>socket.io middleware-start</b> node.
+  
 </script>

@@ -1,26 +1,5 @@
-<script type="text/html" data-template-name="socket.io middleware-start">
-    <div class="form-row">
-        <label for="node-input-name">
-            <i class="fa fa-tag"></i>
-            <span>Name</span>
-        </label>
-        <input type="text" id="node-input-name">
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-server">
-            <i class="fa fa-link"></i>
-            <span>Server</span>
-        </label>
-        <input type="text" id="node-input-server">
-    </div>
-
-
-</script>
-
-
 <script type="text/javascript">
-    RED.nodes.registerType('socket.io middleware-start', {
+  RED.nodes.registerType('socket.io middleware-start', {
         category: "Socket IO Optimized",
         color: "#BA55D3",
         defaults: {
@@ -40,5 +19,42 @@
             return this.name || "Socket.IO Middleware Start";
         },
     });
+</script>
 
+<script type="text/html" data-template-name="socket.io middleware-start">
+    <div class="form-row">
+        <label for="node-input-name">
+            <i class="fa fa-tag"></i>
+            <span>Name</span>
+        </label>
+        <input type="text" id="node-input-name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-server">
+            <i class="fa fa-link"></i>
+            <span>Server</span>
+        </label>
+        <input type="text" id="node-input-server">
+    </div>
+</script>
+
+<script type="text/markdown" data-help-name="socket.io middleware-start">
+  Start a socketIO, all other nodes will be use it to trigger events.
+  <br>
+  This node should be placed at the beginning of the flow.
+  <br>
+  <br>
+  ### Output 1
+  <b>_socketId: (string)</b> The unique ID of the client that has connected. The socket data is stored in the global context using the key socket_${_socketId}.
+  <br>
+  <b>_contextStorageName: (string)</b> The name of the context storage where the socket data is stored.
+  <br>
+
+  ### Output 2
+  <b>_socketId: (string)</b> The unique ID of the client that has connected. The socket data is stored in the global context using the key socket_${_socketId}.
+  <br>
+  <b>_contextStorageName: (string)</b> The name of the context storage where the socket data is stored.
+  <br>
+  <b>_next: (function)</b> A function to proceed with the flow. Call this function after the middleware processes the request. If _next is not called, the connection will be rejected.
 </script>

@@ -86,6 +86,10 @@ module.exports = function (RED) {
     // If SSL is enabled, create an HTTPS server
     if (useSSL) {
       httpsServer = https.createServer(sslConfig, (req, res) => {
+        // Return 200
+        // res.writeHead(200);
+        // res.end("Socket.IO Server");
+        // Return 404
         res.writeHead(404);
       });
       io = new socketio.Server(httpsServer, node.options);
