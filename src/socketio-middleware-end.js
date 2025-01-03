@@ -20,8 +20,14 @@ module.exports = function (RED) {
                 return;
             }
 
+            const error = new Error(msg.errMsg ? msg.errMsg : 'Your connection is not allowed (345456)');
+            // Add error data to the error object
+            if (msg.error_data) {
+                error.data = msg.error_data;
+            }
+
             showNodeStatus(node, "red", `Connection ${msg._socketId} is not allowed`);
-            msg._next(new Error(msg.errMsg ? msg.errMsg : 'Your connection is not allowed (345456)'));
+            msg._next(error);
         });
 
     }
